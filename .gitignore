@@ -1,0 +1,74 @@
+# Pastas de compilação e debug
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# Arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.cache
+*.tmp
+*.log
+
+# Arquivos de build
+*.exe
+*.dll
+*.pdb
+*.dll.mdb
+*.exe.mdb
+
+# Arquivos de backup
+*~
+*.bak
+*.swp
+
+# Arquivos específicos do .NET
+project.lock.json
+project.assets.json
+*.psess
+*.pidb
+*.userprefs
+*.csproj.user
+
+# Testes
+TestResults/
+*.trx
+
+# Publicação
+publish/
+*.pubxml.user
+
+# Arquivos do ReSharper (ferramenta de produtividade)
+_ReSharper*/
+*.DotSettings.user
+
+# Arquivos do Rider (IDE JetBrains)
+.idea/
+*.sln.iml
+
+# Arquivos do Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Arquivos de empacotamento
+*.nupkg
+*.snupkg
+
+# Arquivos de cobertura de código
+*.coverage
+*.coverage.xml
+
+# Arquivos de banco de dados local
+*.mdf
+*.ldf
+*.db
+*.sqlite
+
+# Arquivos de certificado
+*.pfx
+*.p12
