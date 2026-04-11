@@ -5,12 +5,18 @@ public class HelloWorld
     public static void Main(string[] args)  // Mudado de Program para Main
     {
         int vida_Per = 100;
+        int vida_maxima = 100;
 		bool vivo = true;
         
         Console.WriteLine("Sistema gerenciamento de dano \n");
 
 		while (vivo) 
 		{
+            Random rng = new Random();
+            if (rng.Next(1, 101) <= 10)
+            {
+                vida_Per = CurarPersonagem(vida_Per);
+            }
 		Console.WriteLine($"\n--- Vida atual: {vida_Per} ---");
         Console.WriteLine("Você recebeu dano de qual arma? \n");
         Console.WriteLine("1 - Espada, 2 - Revólver, 3 - Granada, 4 - Sniper");
@@ -38,7 +44,7 @@ public class HelloWorld
     }
 	Console.WriteLine("Fim do jogo!");
 	}
-    public static int CalcularDano(int option, int vida_Per)  // Adicionado int como retorno
+    public static int CalcularDano(int option, int vida_Per)
     {
         switch (option)    
         {
@@ -71,6 +77,25 @@ public class HelloWorld
             case > 0:
             return true;
         }
+    }
 
+    public static int CurarPersonagem(int vida_Per, int vidaMaxima = 100)
+    {
+
+    Random random = new Random();
+    int cura_val = random.Next(10, 51);  
+    
+    Console.WriteLine($"Você achou uma poção de cura! +{cura_val} de vida.");
+    
+    int novaVida = vida_Per + cura_val;
+    
+        if (novaVida > vidaMaxima)
+        {
+            novaVida = vidaMaxima;
+            vida_Per = novaVida;
+            Console.WriteLine($"Vida restaurada ao máximo! ({vidaMaxima})");
+        }
+    
+        return novaVida;
     }
 }
