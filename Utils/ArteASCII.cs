@@ -1,0 +1,289 @@
+using System;
+
+public static class ArteASCII
+{
+    public static void DesenharPersonagem()
+    {
+        string arte = @"
+           .---. 
+          /_____\
+         (  (_)  )
+          \     /
+           `---´ 
+          .-'''-. 
+         /   _   \
+        |   ( )   |
+        |    ‾    |
+        |  \___/  |
+        |         |
+        |   /|\   |
+       /|  / | \  |\
+      / | |  |  | | \
+     /__|_|__|__|_|__\
+        |  |  |  |
+        |  |  |  |
+        | /   \ |
+        |/     \|
+       /|   _   |\
+      / |  |_|  | \
+     /  |       |  \
+        |_______|
+       /         \
+      /___________\
+         ";
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(arte);
+        Console.ResetColor();
+    }
+
+    public static void DesenharInimigo()
+    {
+        string arte = @"
+           .-----.
+          /       \
+         /  o   o  \
+        |     ∆     |
+        |   .---.   |
+         \  `---´  /
+          \_______/
+         .-'     '-.
+        /           \
+       |   .-----.\  |
+       |  |       | | |
+       |  |  ███  | | |
+       |   \_____/  | |
+       |             |/
+       |  |       |  |
+       |  |   _   |  |
+       |  |__| |__|  |
+       |     | |     |
+       |     | |     |
+        \    |_|    /
+         '-._   _.-'
+             `-´
+         ";
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(arte);
+        Console.ResetColor();
+    }
+
+public static void DesenharCura()
+{
+    string arte = @"
+       _____
+     .'     '.
+    /  .---.  \
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+   |   '+'   |
+   |   '-'   |
+    \       /
+     `.___.'
+       | |
+       | |
+       |_|
+      /   \
+     /     \
+    /       \
+   /_________\";
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+public static void DesenharEspada()
+{
+    string arte = @"
+                  /\
+        /  \
+       /    \
+      /      \
+     /        \
+    /          \
+   /            \
+  /              \
+ /                \
+|                  |
+|                  |
+|                  |
+|                  |
+|                  |
+|                  |
+|==================|
+|##################|
+|##################|
+|##################|
+|##################|
+|##################|
+|##################|
+|==================|
+|##################|
+|##################|
+|##################|
+|##################|
+|##################|
+|##################|
+|==================|
+|                  |
+\                  /
+ \                /
+  \              /
+   \            /
+    \          /
+     \        /
+      |      |
+      |      |
+      |      |
+      |      |
+      |      |
+      \______/
+";
+    Console.ForegroundColor = ConsoleColor.Gray;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+public static void DesenharRevolver()
+{
+    string arte = @"
+           _________
+          /         \
+         |  O  O  O  |
+         |  O  O  O  |
+         |  O  O  O  |
+         |___________|
+          |  _____  |
+          | |     | |
+          | |  () | |   
+          | |_____| |
+          |_________|
+           |#####|
+           |#####|
+           |#####|
+           |#####|
+           |#####|
+           (#####)
+          /       \
+         /_________\";
+    Console.ForegroundColor = ConsoleColor.DarkYellow;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+public static void DesenharGranada()
+{
+    string arte = @"
+        .------.
+       /        \
+      |   ()()   |
+      |    ()    |
+      |   ()()   |
+      |    ()    |
+      |   ()()   |
+      |    ()    |
+      |   ()()   |
+      |    ()    |
+      |   ()()   |
+       \        /
+        `------'
+           ||
+           ||
+           ||
+           ||
+           ||
+           ||
+           ||
+           \/
+          /  \
+         /    \
+        /      \
+       /________\";
+    Console.ForegroundColor = ConsoleColor.DarkRed;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+public static void DesenharSniper()
+{
+    string arte = @"
+                         _________
+                        /         \
+                       |   ( o )   |  Luneta
+                       |     o     |
+                        \_________/
+                            |
+      _____________________|_____________________
+     /                     |                     \
+    |   ===================|===================   |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+    |                      |                      |
+     \_____________________|_____________________/
+                            |
+                            |_
+                            |_|  Gatilho
+                             |
+                             |
+                            / \
+                           |   |
+                           |   |  Coronha
+                           |   |
+                            \_/";
+    Console.ForegroundColor = ConsoleColor.DarkBlue;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+    public static void DesenharGameOver()
+    {
+        string arte = @"
+    ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ 
+   ██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗
+   ██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝
+   ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
+   ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║
+    ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝
+        ";
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(arte);
+        Console.ResetColor();
+    }
+
+public static void DesenharVitoria()
+{
+    string arte = @"
+   ██╗   ██╗██╗ ██████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+   ██║   ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+   ██║   ██║██║██║        ██║   ██║   ██║██████╔╝ ╚████╔╝ 
+   ╚██╗ ██╔╝██║██║        ██║   ██║   ██║██╔══██╗  ╚██╔╝  
+    ╚████╔╝ ██║╚██████╗   ██║   ╚██████╔╝██║  ██║   ██║   
+     ╚═══╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+    ";
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine(arte);
+    Console.ResetColor();
+}
+
+}

@@ -1,101 +1,126 @@
-﻿using System;
+using System;
 
-public class HelloWorld
+public class JogoDeHordas
 {
-    public static void Main(string[] args)  // Mudado de Program para Main
+    public static void Main(string[] args)
     {
-        int vida_Per = 100;
-        int vida_maxima = 100;
-		bool vivo = true;
-        
-        Console.WriteLine("Sistema gerenciamento de dano \n");
+        Jogador jogador = new Jogador();
+        Inimigo inimigo = HordaSystem.GerarNovoInimigo();
+        int rodadas = 0;
+        Random rng = new Random();
 
-		while (vivo) 
-		{
-            Random rng = new Random();
-            if (rng.Next(1, 101) <= 10)
+        int recorde = BancoDeDados.CarregarRecorde();
+        if (recorde > 0)
+        {
+            Console.WriteLine($"Recorde atual: {recorde} rodadas");
+        }
+
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("\n=== BATALHA SURVIVAL ===\n");
+        Console.ResetColor();
+
+        ArteASCII.DesenharPersonagem();
+        Console.WriteLine("   VOCÊ");
+
+        ArteASCII.DesenharInimigo();
+        Console.WriteLine("   INIMIGO");
+
+        Console.WriteLine("\nPressione ENTER para começar...");
+        Console.ReadLine();
+
+        while (jogador.Vivo)
+        {
+            rodadas++;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n=== RODADA {rodadas} ===\n");
+            Console.ResetColor();
+
+            // Regenerar stamina
+            jogador.RegenerarStamina(5);
+
+            // Display stats
+            int barra = jogador.Vida * 20 / jogador.VidaMaxima;
+            string vidaBarra = new string('█', barra) + new string('░', 20 - barra);
+            Console.WriteLine($"Vida: {jogador.Vida}/{jogador.VidaMaxima} [{vidaBarra}]");
+
+            int barraStamina = jogador.Stamina * 20 / jogador.StaminaMaxima;
+            if (jogador.StaminaMaxima == 0) barraStamina = 0;
+            string staminaBarra = new string('█', barraStamina) + new string('░', 20 - barraStamina);
+            Console.WriteLine($"Stamina: {jogador.Stamina}/{jogador.StaminaMaxima} [{staminaBarra}]");
+
+            int barraInim = inimigo.Vida * 20 / inimigo.VidaMaxima;
+            string vidaBarraInim = new string('█', barraInim) + new string('░', 20 - barraInim);
+            Console.WriteLine($"Vida do Inimigo: {inimigo.Vida}/{inimigo.VidaMaxima} [{vidaBarraInim}]\n");
+
+            // Menu
+            Console.WriteLine("Escolha sua ação:");
+            Console.WriteLine("1. Atacar");
+            Console.WriteLine("2. Fugir");
+            Console.WriteLine("3. Lootear");
+            Console.WriteLine("4. Descansar");
+            Console.WriteLine("5. Usar Poção");
+            string choice = Console.ReadLine() ?? "";
+
+            switch (choice)
             {
-                vida_Per = CurarPersonagem(vida_Per);
+                case "1": // Atacar
+                    CombatSystem.AtacarInimigo(jogador, inimigo);
+                    if (!CombatSystem.VerificarMorteInimigo(inimigo.Vida))
+                    {
+                        LootSystem.GerarLoot(jogador, rng);
+                        inimigo = HordaSystem.GerarNovoInimigo();
+                    }
+                    break;
+                case "2": // Fugir
+                    if (rng.Next(1, 101) <= 50)
+                    {
+                        Console.WriteLine("Você fugiu com sucesso!");
+                        inimigo = HordaSystem.GerarNovoInimigo();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Falhou em fugir!");
+                    }
+                    break;
+                case "3": // Lootear
+                    LootSystem.Lootear(jogador, rng);
+                    break;
+                case "4": // Descansar
+                    jogador.RegenerarStamina(20);
+                    Console.WriteLine("Você descansou e recuperou stamina.");
+                    break;
+                case "5": // Usar Poção
+                    LootSystem.UsarPocao(jogador);
+                    break;
             }
-		Console.WriteLine($"\n--- Vida atual: {vida_Per} ---");
-        Console.WriteLine("Você recebeu dano de qual arma? \n");
-        Console.WriteLine("1 - Espada, 2 - Revólver, 3 - Granada, 4 - Sniper");
-		Console.WriteLine("0 - Sair do jogo");
-        
-        if (int.TryParse(Console.ReadLine(), out int option))
-        {
-			if(option == 0)
-			{
-				Console.WriteLine("Você fugiu do jogo! Covarde!");
-				break;
-			}
-            vida_Per = CalcularDano(option, vida_Per);
-            vivo = VerificarMorte(vida_Per);
-        
-			if (!vivo)
-			{
-				Console.WriteLine("Game Over!");
-			}
-		}
-        else
-        {
-            Console.WriteLine("Entrada inválida! Digite um número.");
-        }
-    }
-	Console.WriteLine("Fim do jogo!");
-	}
-    public static int CalcularDano(int option, int vida_Per)
-    {
-        switch (option)    
-        {
-            case 1:
-                Console.WriteLine("Você foi atingido por uma ESPADA! -10 de vida");
-                return vida_Per - 10;
-            case 2:
-                Console.WriteLine("Você foi atingido por um REVÓLVER! -15 de vida");
-                return vida_Per - 15;
-            case 3:
-                Console.WriteLine("Você foi atingido por uma GRANADA! -50 de vida");
-                return vida_Per - 50;
-            case 4:
-                Console.WriteLine("Você foi atingido por um SNIPER! -80 de vida");
-                return vida_Per - 80;
-            default:
-                Console.WriteLine("Opção inválida/desconhecida. Nenhum dano causado.");
-                return vida_Per;
-        }
-    }
-    
-    public static bool VerificarMorte(int vida_Per)
-    {
-        switch(vida_Per)
-        {
-            case <= 0:
-            Console.WriteLine("\n*** Você morreu ***");
-            return false;
-            
-            case > 0:
-            return true;
-        }
-    }
 
-    public static int CurarPersonagem(int vida_Per, int vidaMaxima = 100)
-    {
+            // Turno do inimigo
+            if (jogador.Vivo && inimigo.Vida > 0)
+            {
+                Arma armaInim = HordaSystem.EscolherArmaInimigo(rng);
+                jogador.Vida = CombatSystem.AtacarComArma(armaInim, jogador.Vida);
+                jogador.Vivo = CombatSystem.VerificarMorte(jogador.Vida);
+            }
 
-    Random random = new Random();
-    int cura_val = random.Next(10, 51);  
-    
-    Console.WriteLine($"Você achou uma poção de cura! +{cura_val} de vida.");
-    
-    int novaVida = vida_Per + cura_val;
-    
-        if (novaVida > vidaMaxima)
-        {
-            novaVida = vidaMaxima;
-            vida_Per = novaVida;
-            Console.WriteLine($"Vida restaurada ao máximo! ({vidaMaxima})");
+            if (!jogador.Vivo)
+            {
+                Console.WriteLine();
+                ArteASCII.DesenharGameOver();
+                Console.WriteLine($"\nVocê sobreviveu {rodadas} rodadas!");
+                if (rodadas > recorde)
+                {
+                    BancoDeDados.SalvarRecorde(rodadas);
+                    Console.WriteLine("Novo recorde!");
+                }
+                break;
+            }
+
+            Console.WriteLine("\nPressione ENTER para continuar...");
+            Console.ReadLine();
         }
-    
-        return novaVida;
+
+        Console.WriteLine("\nFim do jogo!");
     }
 }
