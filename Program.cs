@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+/**
+@author: Murilo
+@version: 1.0
+*/
 
 public class JogoDeHordas
 {
