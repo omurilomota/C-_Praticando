@@ -9,6 +9,7 @@ public class Arma : Item
 
     public Arma(string nome, int dano, int staminaCost) : base(nome, 0)
     {
+        Nome = nome;
         Dano = dano;
         StaminaCost = staminaCost;
     }

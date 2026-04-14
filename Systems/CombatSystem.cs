@@ -78,4 +78,20 @@ public static class CombatSystem
         }
         return true;
     }
+
+
+public static void AtacarJogador(Jogador jogador, Inimigo inimigo)
+{
+    Arma armaInim = inimigo.ArmaPadrao;
+    int danoBase = armaInim.Dano;
+    int danoFinal = CalcularDanoComDefesa(danoBase, jogador.EquippedArmor?.Defesa ?? 0);
+    jogador.Vida -= danoFinal;
+    Console.WriteLine($"{inimigo.Nome} atacou e causou {danoFinal} de dano! Você perdeu {danoFinal} de vida.");
+}
+
+    private static int CalcularDanoComDefesa(int danoBase, int defesa)
+    {
+        int danoFinal = danoBase - defesa;
+        return Math.Max(danoFinal, 0);
+    }
 }

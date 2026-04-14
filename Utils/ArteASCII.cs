@@ -220,7 +220,30 @@ public static void DesenharSniper()
     Console.ResetColor();
 }
 
-    public static void DesenharGameOver()
+    public static void DesenharMochila()
+    {
+        string arte = @"
+        .---------------------.
+       |  [___]   [___]     |
+       |   |   |   |   |     |
+       |   |___|   |___|     |
+       |                     |
+       |    ___        ___  |
+       |   |   |      |   | |
+       |   |___|      |___| |
+       |                     |
+       |      MOCHILA        |
+       |    -----------     |
+       |                     |
+        \_________________/
+            /         \
+           '___________'";
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(arte);
+        Console.ResetColor();
+    }
+
+     public static void DesenharGameOver()
     {
         string arte = @"
     ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ 

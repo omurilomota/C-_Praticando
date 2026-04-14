@@ -9,6 +9,6 @@ public class Item
     public Item(string nome, int value)
     {
         Nome = nome;
-        this.Value = Value;
+        this.Value = value;
     }
 }

@@ -31,12 +31,33 @@ public static class LootSystem
         }
     }
     // Corrigir lógica de loot
-    public static void GerarLoot(Jogador jogador, Random rng)
+    public static void GerarItemUnico(Jogador jogador, Random rng)
     {
-        Lootear(jogador, rng);
-        Item loot =  jogador.Armas[rng.Next(jogador.Armas.Count)];
-        jogador.Inventory.Add(loot);
-        Console.WriteLine($"Você recebeu: {loot.Nome}");
+        if (rng.Next(1, 101) <= 30) // 30% chance de loot
+        {
+            int tipo = rng.Next(1, 4); // 1: Arma, 2: Armadura, 3: Poção
+            switch (tipo)
+            {
+                case 1:
+                    Arma novaArma = GerarArmaAleatoria(rng);
+                    jogador.Inventory.Add(novaArma);
+                    Console.WriteLine($"Você encontrou uma {novaArma.Nome} (+{novaArma.Dano} dano, custo {novaArma.StaminaCost} stamina)!");
+                    break;
+                case 2:
+                    Armadura novaArmadura = GerarArmaduraAleatoria(rng);
+                    jogador.Inventory.Add(novaArmadura);
+                    Console.WriteLine($"Você encontrou uma {novaArmadura.Nome} (+{novaArmadura.Defesa} defesa)!");
+                    break;
+                case 3:
+                    jogador.Pocoes++;
+                    Console.WriteLine("Você encontrou uma poção de cura!");
+                    break;
+    }
+        }
+        else
+        {
+            Console.WriteLine("Nada encontrado nessa rodada.");
+        }
     }
 
     private static Arma GerarArmaAleatoria(Random rng)
