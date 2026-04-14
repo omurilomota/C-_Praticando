@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Reflection.Metadata;
 
 public class JogoDeHordas
 {
@@ -8,6 +9,7 @@ public class JogoDeHordas
         Inimigo inimigo = HordaSystem.GerarNovoInimigo();
         int rodadas = 0;
         Random rng = new Random();
+        bool primeiraRodada = true;
 
         int recorde = BancoDeDados.CarregarRecorde();
         if (recorde > 0)
@@ -53,7 +55,20 @@ public class JogoDeHordas
             int barraInim = inimigo.Vida * 20 / inimigo.VidaMaxima;
             string vidaBarraInim = new string('█', barraInim) + new string('░', 20 - barraInim);
             Console.WriteLine($"Vida do Inimigo: {inimigo.Vida}/{inimigo.VidaMaxima} [{vidaBarraInim}]\n");
-
+            while (primeiraRodada == true) {
+            // Rodada de começo para lootear.
+            Console.WriteLine("Rodada para lootear de início. Presione ENTER para continuar...");
+            Console.ReadLine();
+            if (primeiraRodada)
+            {
+            for (int i = 0; i < 3; i++)
+            {
+                LootSystem.GerarLoot(jogador, rng);
+            }
+            primeiraRodada = false;
+            }
+            }
+        
             // Menu
             Console.WriteLine("Escolha sua ação:");
             Console.WriteLine("1. Atacar");
@@ -61,6 +76,7 @@ public class JogoDeHordas
             Console.WriteLine("3. Lootear");
             Console.WriteLine("4. Descansar");
             Console.WriteLine("5. Usar Poção");
+            Console.WriteLine("6. Equipar Item");
             string choice = Console.ReadLine() ?? "";
 
             switch (choice)
@@ -94,6 +110,33 @@ public class JogoDeHordas
                 case "5": // Usar Poção
                     LootSystem.UsarPocao(jogador);
                     break;
+                case "6": // Equipar Item
+                if (jogador.Inventory.Count == 0)
+                    {
+                        Console.WriteLine("Nenhum item disponível para equipar.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Escolha um item para equipar:");
+                        for (int i = 0; i < jogador.Inventory.Count; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {jogador.Inventory[i].Nome}");
+                        }
+
+                        Console.WriteLine("Escolha o numero do item");
+                        if(int.TryParse(Console.ReadLine(), out int Itemchoice) && Itemchoice > 0 && Itemchoice <= jogador.Inventory.Count)
+                        {
+                            jogador.EquiparItem(jogador.Inventory[Itemchoice - 1]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Opção inválida!");
+                        }
+                    }
+                    break;
+                default: // Opção inválida
+                    Console.WriteLine("Opção inválida!");
+                    break;
             }
 
             // Turno do inimigo
@@ -102,6 +145,8 @@ public class JogoDeHordas
                 Arma armaInim = HordaSystem.EscolherArmaInimigo(rng);
                 jogador.Vida = CombatSystem.AtacarComArma(armaInim, jogador.Vida);
                 jogador.Vivo = CombatSystem.VerificarMorte(jogador.Vida);
+                jogador.UpdatePowerUps();
+                inimigo.UpdatePowerUps();
             }
 
             if (!jogador.Vivo)

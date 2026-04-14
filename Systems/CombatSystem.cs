@@ -30,6 +30,24 @@ public static class CombatSystem
 
     public static void AtacarInimigo(Jogador jogador, Inimigo inimigo)
     {
+        int damage = 10;
+        Arma armaUsada = jogador.EquippedWeapon ?? jogador.ArmaAtual;
+        if (jogador.Stamina >= armaUsada.StaminaCost)
+        {
+            inimigo.Vida = AtacarComArma(armaUsada, inimigo.Vida);
+            jogador.Stamina -= armaUsada.StaminaCost;
+            Console.WriteLine($"Ataque com {armaUsada.Nome}! -{armaUsada.Dano} de vida");
+        }
+        else
+        {
+            Console.WriteLine("Stamina insuficiente para atacar!");
+        }
+        if(jogador.EquippedWeapon != null)
+        {
+            damage += jogador.EquippedWeapon.Dano;
+        }
+        inimigo.Vida -= damage;
+        Console.WriteLine($"Você atacou e causou {damage} de dano!");
         if (jogador.Stamina >= jogador.ArmaAtual.StaminaCost)
         {
             inimigo.Vida = AtacarComArma(jogador.ArmaAtual, inimigo.Vida);

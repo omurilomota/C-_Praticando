@@ -30,10 +30,13 @@ public static class LootSystem
             Console.WriteLine("Nada encontrado nessa busca.");
         }
     }
-
+    // Corrigir lógica de loot
     public static void GerarLoot(Jogador jogador, Random rng)
     {
         Lootear(jogador, rng);
+        Item loot =  jogador.Armas[rng.Next(jogador.Armas.Count)];
+        jogador.Inventory.Add(loot);
+        Console.WriteLine($"Você recebeu: {loot.Nome}");
     }
 
     private static Arma GerarArmaAleatoria(Random rng)

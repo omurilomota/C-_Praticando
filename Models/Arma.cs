@@ -1,16 +1,14 @@
 using System;
 
-public class Arma
+public class Arma : Item
 {
-    public string Nome { get; set; }
 
     public int Dano { get; set; }
 
     public int StaminaCost { get; set; }
 
-    public Arma(string nome, int dano, int staminaCost)
+    public Arma(string nome, int dano, int staminaCost) : base(nome, 0)
     {
-        Nome = nome;
         Dano = dano;
         StaminaCost = staminaCost;
     }

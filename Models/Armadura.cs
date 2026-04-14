@@ -1,11 +1,10 @@
 using System;
 
-public class Armadura
+public class Armadura : Item
 {
-    public string Nome { get; set; }
     public int Defesa { get; set; }
 
-    public Armadura(string nome, int defesa)
+    public Armadura(string nome, int defesa) : base(nome, 0)
     {
         Nome = nome;
         Defesa = defesa;
