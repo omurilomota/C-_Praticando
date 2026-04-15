@@ -116,6 +116,5 @@ public class Jogador
             Stamina = StaminaMaxima;
         }
     }
-
     
 }

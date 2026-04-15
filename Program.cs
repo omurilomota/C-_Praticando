@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-/**
-@author: Murilo
-@version: 1.0
-*/
+
+// Project: JogoDeHordas
+// Author: Murilo
+// Version: 1.0
 
 public class JogoDeHordas
 {
@@ -120,9 +120,18 @@ public class JogoDeHordas
                         acaoEscolhida = true;
                         break;
                     case "5":
-                        LootSystem.UsarPocao(jogador);
-                        acaoEscolhida = true;
-                        break;
+                    int pocao = jogador.Pocoes;
+                    if (pocao >= 0)
+                        {
+                            LootSystem.UsarPocao(jogador);
+                            acaoEscolhida = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Pocão negativa lil bro lmao ???");      
+                            break;                  
+                        }
                     case "6":
                         if (jogador.Inventory.Count == 0)
                         {
@@ -177,6 +186,11 @@ public class JogoDeHordas
 
             Console.WriteLine("\nPressione ENTER para continuar...");
             Console.ReadLine();
+
+            if(inimigo.Vida == 0)
+            {
+                break;
+            }
         }
 
         Console.WriteLine("\nFim do jogo!");
