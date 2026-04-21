@@ -26,19 +26,17 @@ C#_Praticando/
 ├── Program.cs          # Main do jogo
 ├── Models/
 │   ├── Jogador.cs    # Dados do jogador
-│   ├── Inimigo.cs  # Dados do inimigo
-│   ├── Arma.cs     # Modelo de arma
-│   ├── Armadura.cs # Modelo de armadura
-│   └── Items.cs   # Modelo base de item
+│   ├── Inimigo.cs    # Dados do inimigo
+│   └── Items.cs      # Modelos de Item, Arma e Armadura
 ├── Systems/
 │   ├── CombatSystem.cs  # Sistema de combate
-│   ├── HordaSystem.cs # Geração de inimigos
-│   ├── LootSystem.cs  # Sistema de loot
-│   └── PowerUp.cs    # Power-ups
+│   ├── HordaSystem.cs   # Geração de inimigos
+│   ├── LootSystem.cs    # Sistema de loot
+│   └── PowerUp.cs       # Power-ups
 ├── Utils/
-│   └── ArteASCII.cs  # Arte ASCII do jogo
+│   └── ArteASCII.cs     # Arte ASCII do jogo
 └── Data/
-    └── BancoDeDados.cs # Recorde e persistência
+    └── BancoDeDados.cs  # Recorde e persistência
 ```
 
 ## Documentação dos Arquivos
@@ -54,39 +52,48 @@ C#_Praticando/
 ### Models/Inimigo.cs
 - **Inimigo**: Classe do inimigo com nome, vida, defesa, arma
 - Construtores: padrão (fallback) e completo (usado por HordaSystem)
+- Método: UpdatePowerUps() para gerenciar power-ups ativos
 
-### Models/Arma.cs / Armadura.cs
-- Herdam de Item, adicionam Dano/StaminaCost ou Defesa
+### Models/Items.cs
+- **Item**: Classe base para todos os itens do jogo
+- **Arma**: Item equipável que adiciona dano e custo de stamina
+- **Armadura**: Item equipável que adiciona defesa, vida e stamina bônus
 
 ### Systems/CombatSystem.cs
 - **AtacarComArma()**: Ataque com arte ASCII
-- **AtacarInimigo()**: Jogador ataca inimigo
+- **AtacarInimigo()**: Jogador ataca inimigo (consome stamina)
 - **AtacarJogador()**: Inimigo ataca jogador (com defesa)
 - **CalcularDanoComDefesa()**: Reduz dano pela defesa
+- **VerificarMorte()/VerificarMorteInimigo()**: Checa condições de vitória/derrota
 
 ### Systems/HordaSystem.cs
 - **EnemyType**: Molde para tipos de inimigos
 - **GerarNovoInimigo()**: Gera inimigo com progressão de dificuldade
+- Progressão: +10 vida por rodada, +1 defesa a cada 5 rodadas
 - Tipos: Zumbi, Goblin, Orc, Dragão Pequeno
 
 ### Systems/LootSystem.cs
-- **Lootear()**: 30% chance, adiciona a listas
-- **GerarItemUnico()**: 30% chance, adiciona ao Inventory
+- **Lootear()**: 30% chance, adiciona a listas de equipamentos
+- **GerarItemUnico()**: 30% chance, adiciona ao Inventory (inventário)
 - **UsarPocao()**: Cura 10-50 de vida
 
+### Systems/PowerUp.cs
+- **PowerUp**: Representa buffs temporários com nome, duração e efeito
+
 ### Utils/ArteASCII.cs
-- Desenhos: Personagem, Inimigo, Game Over, Armas, Poção, Mochila
+- Desenhos: Personagem, Inimigo, Game Over, armas, poção, mochila
 
 ### Data/BancoDeDados.cs
-- Salva/carrega highscore em arquivo texto
+- Salva/carrega highscore em arquivo texto (highscore.txt)
 
 ## Recursos
 
-- Sistema de inventario com equipamento de armas e armaduras
-- Inimigos progressivos (vida +10/rodada, defesa +1/5rodadas)
+- Sistema de inventário com equipamento de armas e armaduras
+- Inimigos progressivos (vida +10/rodada, defesa +1/5 rodadas)
 - Arte ASCII para personagens e objetos
 - Recorde salvo em arquivo
 - Vida e stamina com barras visuais
 - Poções de cura
 - 4 tipos de inimigos: Zumbi, Goblin, Orc, Dragão Pequeno
 - Loop de menu com validação de entrada
+- Power-ups temporários (sistema preparado)

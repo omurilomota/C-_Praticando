@@ -1,9 +1,5 @@
 using System;
 
-/// <summary>
-/// Classe que representa um inimigo no jogo.
-/// Armazena atributos como nome, vida, defesa e arma.
-/// </summary>
 public class Inimigo
 {
     public String Nome { get; set; }        // Nome do inimigo (ex: Zumbi, Goblin)
@@ -16,9 +12,6 @@ public class Inimigo
     // Power-ups ativos do inimigo
     public List<PowerUp> ActivePowerUps { get; set; } = new List<PowerUp>();                                                                                                                                                                 
                                                                                                                                                                                                                                                
-    /// <summary>
-    /// Atualiza todos os power-ups activos (decrementa duração).
-    /// </summary>                                                                                                                                                                                                            
     public void UpdatePowerUps()                                                                                                                                                                                                             
     {                                                                                                                                                                                                                                        
         // Itera sobre uma cópia da lista para permitir remoção
@@ -38,10 +31,6 @@ public class Inimigo
         }                                                                                                                                                                                                                                     
     } 
 
-    /// <summary>
-    /// Construtor padrão do inimigo (valores fallback).
-    /// </summary>
-    /// <param name="vidaInicial">Vida inicial (padrão: 100)</param>
     public Inimigo(int vidaInicial = 100)
     {
         VidaMaxima = vidaInicial;    // Define vida máxima
@@ -51,13 +40,6 @@ public class Inimigo
         ArmaPadrao = new Arma("Garras", 10, 0);  // Arma padrão
     }
 
-    /// <summary>
-    /// Construtor completo do inimigo com todos os atributos.
-    /// </summary>
-    /// <param name="nome">Nome do inimigo</param>
-    /// <param name="vida">Vida do inimigo</param>
-    /// <param name="defesa">Defesa do inimigo</param>
-    /// <param name="arma">Arma que o inimigo usa</param>
     public Inimigo(string nome, int vida, int defesa, Arma arma)
     {
         Nome = nome;          // Define o nome

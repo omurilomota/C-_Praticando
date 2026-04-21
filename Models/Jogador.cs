@@ -1,120 +1,137 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-/// <summary>
-/// Classe que representa o jogador do jogo.
-/// Armazena atributos como vida, stamina, inventário e itens equipped.
-/// </summary>
 public class Jogador
 {
-    // Atributos do jogador
-    public int Stamina { get; set; }          // Stamina atual
-    public int StaminaMaxima { get; set; }    // Stamina máxima
-    public Arma ArmaAtual { get; set; }       // Arma que o jogador está usando atualmente
-    public List<Arma> Armas { get; set; }   // Lista de armas adquiridas
-    public List<Armadura> Armaduras { get; set; } // Lista de armaduras adquiridas
-    public int Vida { get; set; }            // Vida atual
-    public int VidaMaxima { get; set; }      // Vida máxima
-    public int Pocoes { get; set; }        // Quantidade de poções disponíveis
-    public bool Vivo { get; set; }         // Indica se o jogador está vivo
+    // Atributos base
+    public int Vida { get; set; }
     
-    // Power-ups ativos do jogador
-    public List<PowerUp> ActivePowerUps { get; set; } = new List<PowerUp>();
-    
-    // Inventário do jogador (itens para equipar)
-    public List<Item> Inventory {get; set;} = new List<Item>();
-    
-    // Item atualmente equipado
-    public Arma? EquippedWeapon { get; set; }     // Arma equipada
-    public Armadura? EquippedArmor { get; set; } // Armadura equipada
+    public int VidaMaxima { get; set; }
+    public int Stamina { get; set; }
+    public int StaminaMaxima { get; set; }
+    public int DanoBase { get; private set; }      // Dano sem armas
+    public int DanoTotal => DanoBase + (ArmaEquipada?.Dano ?? 0);
+    public int Pocoes { get; set; }
+    public bool Vivo { get; set; }
 
-    /// <summary>
-    /// Equipa um item (arma ou armadura) do inventário.
-    /// </summary>
-    /// <param name="item">Item a ser equipado</param>
-    public void EquiparItem(Item item)
-    {
-        // Verifica se o item é uma arma
-        if (item is Arma arma)
-        {
-            EquippedWeapon = arma;  // Define a arma equipada
-            ArmaAtual = arma;     // Define como arma atual
-        }
-        // Verifica se o item é uma armadura
-        else if (item is Armadura armadura)
-        {
-            EquippedArmor = armadura;  // Define a armadura equipada
-        }
-        Console.WriteLine($"Item: {item.Nome} equipado com sucesso!");
-    }
+    // Equipamentos atuais
+    public Arma ArmaEquipada { get; private set; }
+    public Armadura ArmaduraEquipada { get; private set; }
 
-    /// <summary>
-    /// Aplica um power-up ao jogador.
-    /// </summary>
-    /// <param name="p">Power-up a ser aplicado</param>
-    public void ApplyPowerUp(PowerUp p)
-    {
-        ActivePowerUps.Add(p);  // Adiciona à lista de power-ups
-        p.Effect(this, null);    // Aplica o efeito do power-up
-    }
+    // Inventários
+    public List<Arma> Armas { get; private set; }
+    public List<Armadura> Armaduras { get; private set; }
+    public List<Item> Inventory { get; private set; }
 
-    /// <summary>
-    /// Atualiza todos os power-ups activos (decrementa duração).
-    /// </summary>
-    public void UpdatePowerUps()
-    {
-        // Itera sobre uma cópia da lista para permitir remoção
-        foreach (var p in ActivePowerUps.ToList())
-        {
-            p.Duration--;  // Decrementa a duração
-            if (p.Duration <= 0)
-            {
-                // Remove o power-up se a duração acabou
-                ActivePowerUps.Remove(p);
-            }
-            else
-            {
-                // Caso contrário, aplica o efeito novamente
-                p.Effect(this,null);
-            }
-        }
-    }
+    // Power-ups ativos
+    public List<PowerUp> ActivePowerUps { get; private set; }
 
-    /// <summary>
-    /// Construtor do jogador com valores padrão.
-    /// </summary>
-    /// <param name="vidaInicial">Vida inicial (padrão: 100)</param>
-    /// <param name="staminaInicial">Stamina inicial (padrão: 100)</param>
     public Jogador(int vidaInicial = 100, int staminaInicial = 100)
     {
-        VidaMaxima = vidaInicial;    // Define vida máxima
-        Vida = vidaInicial;        // Define vida atual
-        Vivo = true;                // Jogador começa vivo
-        StaminaMaxima = staminaInicial;  // Define stamina máxima
-        Stamina = staminaInicial;        // Define stamina atual
-        
-        // Cria a lista de armas com uma arma inicial (Punhos)
-        Armas = new List<Arma> { new Arma("Punhos", 5, 5) };
-        ArmaAtual = Armas[0];      // Define arma atual
-        
-        Armaduras = new List<Armadura>();  // Lista de armaduras vazia
-        Pocoes = 0;                 // Nenhuma poção no início
-        EquippedWeapon = null;        // Nenhuma arma equipada
-        EquippedArmor = null;        // Nenhuma armadura equipada
+        Vida = vidaInicial;
+        VidaMaxima = vidaInicial;
+        Stamina = staminaInicial;
+        StaminaMaxima = staminaInicial;
+        DanoBase = 10;
+        Pocoes = 3;
+        Vivo = true;
+
+        ArmaEquipada = null;
+        ArmaduraEquipada = null;
+
+        Armas = new List<Arma> { new Arma("Punhos", 5, 0) }; // arma padrão
+        Armaduras = new List<Armadura>();
+        Inventory = new List<Item>();
+        ActivePowerUps = new List<PowerUp>();
     }
 
-    /// <summary>
-    /// Regenera stamina do jogador.
-    /// </summary>
-    /// <param name="quantidade">Quantidade de stamina a recuperar</param>
+    public void EquiparArma(Arma novaArma)
+    {
+        if (ArmaEquipada != null)
+        {
+            DanoBase -= ArmaEquipada.Dano;
+        }
+
+        ArmaEquipada = novaArma;
+        DanoBase += novaArma.Dano;
+        Console.WriteLine($"Arma equipada: {novaArma.Nome} (+{novaArma.Dano} de dano)");
+    }
+
+    public void EquiparArmadura(Armadura novaArmadura)
+    {
+        if (ArmaduraEquipada != null)
+        {
+            // Remove bônus da armadura antiga
+            VidaMaxima -= ArmaduraEquipada.BonusVida;
+            StaminaMaxima -= ArmaduraEquipada.BonusStamina;
+            if (Vida > VidaMaxima) Vida = VidaMaxima;
+            if (Stamina > StaminaMaxima) Stamina = StaminaMaxima;
+        }
+
+        ArmaduraEquipada = novaArmadura;
+        VidaMaxima += novaArmadura.BonusVida;
+        StaminaMaxima += novaArmadura.BonusStamina;
+        Vida += novaArmadura.BonusVida;
+        Stamina += novaArmadura.BonusStamina;
+
+        Console.WriteLine($"Armadura equipada: {novaArmadura.Nome} (+{novaArmadura.BonusVida} vida, +{novaArmadura.BonusStamina} stamina)");
+    }
+
+    public void EquiparItem(Item item)
+    {
+        if (item is Arma arma)
+        {
+            EquiparArma(arma);
+            Armas.Add(arma);
+        }
+        else if (item is Armadura armadura)
+        {
+            EquiparArmadura(armadura);
+            Armaduras.Add(armadura);
+        }
+        else
+        {
+            Console.WriteLine("Item não pode ser equipado.");
+            return;
+        }
+
+        Inventory.Remove(item);
+    }
+
+    public void MostrarStatus()
+    {
+        Console.WriteLine("\n=== STATUS DO JOGADOR ===");
+        Console.WriteLine($"❤️ Vida: {Vida}/{VidaMaxima}");
+        Console.WriteLine($"⚡ Stamina: {Stamina}/{StaminaMaxima}");
+        Console.WriteLine($"⚔️ Dano: {DanoTotal}");
+        Console.WriteLine($"🧪 Poções: {Pocoes}");
+        Console.WriteLine($"🗡️ Arma: {(ArmaEquipada?.Nome ?? "Nenhuma")}");
+        Console.WriteLine($"🛡️ Armadura: {(ArmaduraEquipada?.Nome ?? "Nenhuma")}");
+        Console.WriteLine("==========================\n");
+    }
+
     public void RegenerarStamina(int quantidade)
     {
-        Stamina += quantidade;  // Adiciona stamina
-        if (Stamina > StaminaMaxima)
+        Stamina = Math.Min(Stamina + quantidade, StaminaMaxima);
+        Console.WriteLine($"Você recuperou {quantidade} de stamina. Stamina atual: {Stamina}/{StaminaMaxima}");
+    }
+
+    public void ApplyPowerUp(PowerUp p)
+    {
+        ActivePowerUps.Add(p);
+        p.Effect(this, null);
+    }
+
+    public void UpdatePowerUps()
+    {
+        foreach (var p in ActivePowerUps.ToList())
         {
-            // Limita ao valor máximo
-            Stamina = StaminaMaxima;
+            p.Duration--;
+            if (p.Duration <= 0)
+                ActivePowerUps.Remove(p);
+            else
+                p.Effect(this, null);
         }
     }
-    
 }

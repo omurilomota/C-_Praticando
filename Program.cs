@@ -75,8 +75,9 @@ public class JogoDeHordas
             }
 
             // Menu
-            bool acaoEscolhida = false;
-            while (!acaoEscolhida)
+            //bool acaoEscolhida = false;
+            bool consumiuTurno = false;
+            while (!consumiuTurno)
             {
                 Console.WriteLine("\nEscolha sua ação:");
                 Console.WriteLine("1. Atacar");
@@ -87,6 +88,12 @@ public class JogoDeHordas
                 Console.WriteLine("6. Equipar Item");
                 string choice = Console.ReadLine() ?? "";
 
+                if (choice.Equals("stamina", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine($"Stamina: {jogador.Stamina}/{jogador.StaminaMaxima}");
+                    continue;
+                }
+                
                 switch (choice)
                 {
                     case "1":
@@ -96,7 +103,7 @@ public class JogoDeHordas
                             LootSystem.GerarItemUnico(jogador, rng);
                             inimigo = HordaSystem.GerarNovoInimigo(rodadas);
                         }
-                        acaoEscolhida = true;
+                        consumiuTurno = true;
                         break;
                     case "2":
                         if (rng.Next(1, 101) <= 50)
@@ -108,30 +115,20 @@ public class JogoDeHordas
                         {
                             Console.WriteLine("Falhou em fugir!");
                         }
-                        acaoEscolhida = true;
+                        consumiuTurno = true;
                         break;
                     case "3":
                         LootSystem.Lootear(jogador, rng);
-                        acaoEscolhida = true;
+                        jogador.Stamina -= 5;
                         break;
                     case "4":
                         jogador.RegenerarStamina(20);
                         Console.WriteLine("Você descansou e recuperou stamina.");
-                        acaoEscolhida = true;
+                        consumiuTurno = true;
                         break;
                     case "5":
-                    int pocao = jogador.Pocoes;
-                    if (pocao >= 0)
-                        {
-                            LootSystem.UsarPocao(jogador);
-                            acaoEscolhida = true;
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Pocão negativa lil bro lmao ???");      
-                            break;                  
-                        }
+                        LootSystem.UsarPocao(jogador);
+                        break;
                     case "6":
                         if (jogador.Inventory.Count == 0)
                         {
@@ -154,7 +151,6 @@ public class JogoDeHordas
                                 Console.WriteLine("Opção inválida!");
                             }
                         }
-                        acaoEscolhida = true;
                         break;
                     default:
                         Console.WriteLine("Opção inválida!");

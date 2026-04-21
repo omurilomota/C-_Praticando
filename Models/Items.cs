@@ -1,25 +1,45 @@
 using System;
 
-/// <summary>
-/// Classe base para todos os itens do jogo.
-/// </summary>
 public class Item
 {
-    // Nome do item
-    public String Nome { get; set; }
-    
-    // Valor do item (para possíveis transações futuras)
+    public string Nome { get; set; }
     public int Value { get; set; }
 
-    /// <summary>
-    /// Construtor do item.
-    /// Permite criar um item com nome e valor.
-    /// </summary>
-    /// <param name="nome">Nome do item</param>
-    /// <param name="value">Valor do item</param>
+    public Item(string nome)
+    {
+        Nome = nome;
+        Value = 0;
+    }
+
     public Item(string nome, int value)
     {
-        Nome = nome;              // Define o nome
-        this.Value = value;     // Define o valor
+        Nome = nome;
+        Value = value;
+    }
+}
+
+public class Arma : Item
+{
+    public int Dano { get; set; }
+    public int CustoStamina { get; set; }
+
+    public Arma(string nome, int dano, int custoStamina) : base(nome)
+    {
+        Dano = dano;
+        CustoStamina = custoStamina;
+    }
+}
+
+public class Armadura : Item
+{
+    public int Defesa { get; set; }
+    public int BonusVida { get; set; }
+    public int BonusStamina { get; set; }
+
+    public Armadura(string nome, int defesa, int bonusVida, int bonusStamina) : base(nome)
+    {
+        Defesa = defesa;
+        BonusVida = bonusVida;
+        BonusStamina = bonusStamina;
     }
 }
